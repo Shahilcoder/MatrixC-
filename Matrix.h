@@ -15,6 +15,9 @@ private:
 	string order;
 	bool MultiplicationPossible;
 	bool AdditionPossible;
+	bool IsSquareMatrix;
+	bool IsDiagonalMatrix;
+	bool IsScalarMatrix;
 
 public:
 	Matrix()
@@ -22,8 +25,96 @@ public:
 		//just a default constructor override
 		MultiplicationPossible = true;
 		AdditionPossible = true;
+		IsSquareMatrix = false;
 	}
 	
+	//Check whether the matrix is square
+	void CheckIsSquareMatrix()
+	{
+		if(row==column)
+			IsSquareMatrix = true;
+		else
+			IsSquareMatrix = false;
+	}
+	
+	//Check whether the matrix is diagonal
+	void CheckIsDiagonalMatrix()
+	{
+		CheckIsSquareMatrix();
+		if(IsSquareMatrix)
+		{
+			int flag=1;
+
+			for(int i=0; i<row; ++i)
+			{
+				for(int j=0; j<column; ++j)
+				{
+					if(i!=j)
+					{
+						if(data[i][j]==0)
+							continue;
+						else
+						{	
+							
+							flag=0;
+							IsDiagonalMatrix = false;
+							break;
+						}	
+					}
+					else
+					{
+						if(data[i][j]==0)
+						{
+							flag=0;
+							IsDiagonalMatrix = false;
+							break;
+						}
+					}
+				}
+			}
+			
+			if(flag)
+				IsDiagonalMatrix = true;
+		}
+		
+		else
+			IsDiagonalMatrix = false;
+	}
+	
+	//Check whether the matrix is Scalar
+	void CheckIsScalarMatrix()
+	{
+		CheckIsDiagonalMatrix();
+		if(IsDiagonalMatrix)
+		{
+			int temp = data[0][0];
+			int flag=1;
+			for(int i=1; i<row; ++i)
+			{
+				for(int j=1; j<column; ++j)
+				{
+					if(i==j)
+					{
+						if(temp==data[i][j])
+							temp = data[i][j];
+						else
+						{
+							flag=0;
+							IsScalarMatrix = false;
+							break;
+						}
+					}
+				}
+			}
+			
+			if(flag)
+				IsScalarMatrix = true;
+		}
+		
+		else
+			IsScalarMatrix = false;
+	}
+
 	//initialize matrix with all data
 	//elements 'zero'
 	Matrix(int r, int col)
@@ -85,6 +176,15 @@ public:
 				cout << endl;
 			}
 		}
+		
+		CheckIsScalarMatrix();
+		
+		if(IsSquareMatrix)
+			cout<<"\nIs Square Matrix";
+		if(IsDiagonalMatrix)
+			cout<<"\nIs Diagonal Matrix";
+		if(IsScalarMatrix)
+			cout<<"\nIs Scalar Matrix";
 	}
 	
 	//Adds two matrices
