@@ -15,9 +15,12 @@ private:
 	string order;
 	bool MultiplicationPossible;
 	bool AdditionPossible;
+	bool IsRowMatrix;
+	bool IsColumnMatrix;
 	bool IsSquareMatrix;
 	bool IsDiagonalMatrix;
 	bool IsScalarMatrix;
+	bool IsInvertibleMatrix;
 
 public:
 	Matrix()
@@ -26,6 +29,26 @@ public:
 		MultiplicationPossible = true;
 		AdditionPossible = true;
 		IsSquareMatrix = false;
+	}
+	
+	//Check whether the matrix is row or columns
+	void CheckIsRowOrColumnMatrix()
+	{
+		if(row==1 and column!=1)
+		{
+			IsRowMatrix = true;
+			IsColumnMatrix = false;
+		}
+		else if(row!=1 and column==1)
+		{
+			IsRowMatrix = false;
+			IsColumnMatrix = true;
+		}
+		else
+		{
+			IsRowMatrix = false;
+			IsColumnMatrix = false;
+		}
 	}
 	
 	//Check whether the matrix is square
@@ -178,13 +201,27 @@ public:
 		}
 		
 		CheckIsScalarMatrix();
+		CheckIsRowOrColumnMatrix();
 		
 		if(IsSquareMatrix)
+		{
 			cout<<"\nIs Square Matrix";
-		if(IsDiagonalMatrix)
-			cout<<"\nIs Diagonal Matrix";
-		if(IsScalarMatrix)
-			cout<<"\nIs Scalar Matrix";
+			if(IsDiagonalMatrix)
+			{
+				cout<<"\nIs Diagonal Matrix";
+				if(IsScalarMatrix)
+					cout<<"\nIs Scalar Matrix";
+			}
+		}
+		
+		else if(IsRowMatrix)
+			cout<<"\nIs Row Matrix";
+		
+		else if(IsColumnMatrix)
+			cout<<"\nIs Column Matrix";
+		
+		else
+			cout<<"\nIs An Ordinary Matrix(No special type)";
 	}
 	
 	//Adds two matrices
@@ -294,6 +331,15 @@ public:
 		
 		return m2;
 	}
+	
+	/*class Determinant
+	{
+		private:
+			int determinant;
+		
+		public:
+			
+	};*/
 };
 
 //---------------------------------------------------------------------------------------------------------------------------------
